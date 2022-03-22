@@ -16,10 +16,10 @@ channel.queue_declare(queue=queue, durable=True, arguments={"x-queue-type": "quo
 
 
 channel.queue_bind(exchange='all_message', queue=queue, routing_key='error')
-channel.queue_bind(exchange='all_message', queue=queue, routing_key='info')
+channel.queue_bind(exchange='all_message', queue=queue, routing_key='good')
 
 def callback(ch, method, body):
-    print(" [x] Received {}".format(body))
+    print(" [x] Received All Messages {}".format(body))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 channel.basic_qos(prefetch_count=1)

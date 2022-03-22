@@ -4,7 +4,7 @@ import random
 import json
 import datetime
 
-count = 10000
+count = 100
 #queue = 'all_message'
 
 credentials = pika.PlainCredentials('user', 'PASSWORD')
@@ -24,7 +24,7 @@ for i in range(1, count+1):
         }
         
     else:
-        rk = 'info'
+        rk = 'good'
         message = {
             "id": i,
             "message": "Hey buddy, we are doing good {}".format(i),
@@ -35,5 +35,5 @@ for i in range(1, count+1):
     print(" [x] Sent {}".format(message))
     time.sleep(random.randint(1, 3))
 
-channel.exchange_declare(exchange='error_message', if_unused=False)
+channel.exchange_delete(exchange='all_message', if_unused=False)
 connection.close()
