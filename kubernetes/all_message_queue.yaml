@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-all-message-queue
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq-all-message-queue
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-all-message-queue
+    spec:
+      containers:
+      - name: rabbitmq-all-message-queue
+        image: tazimtaz/all-message-subs-eh
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-all-message-queue-service
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq-all-message-queue
+  ports:
+  - port: 8001
