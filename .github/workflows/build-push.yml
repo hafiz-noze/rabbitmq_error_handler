@@ -1,0 +1,46 @@
+name: docker-build-push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, 'skip build')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: build
+        uses: actions/checkout@v2
+      
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get the version number
+        id: vars
+        run: echo "{{ github.event.head_commit.id }}"
+
+      - name: Build and push the latest producer image
+        working-directory: ./src/producer
+        run: |
+          docker build -t tazimtaz/producer_mq_eh:latest .
+          docker push tazimtaz/producer_mq_eh:latest
+
+      - name: Build and push the latest all message subs image
+        working-directory: ./src/all_subscribers
+        run: |
+          docker build -t tazimtaz/all-message-subs-eh:latest .
+          docker push tazimtaz/all-message-subs-eh:latest
+
+      - name: Build and push the latest good message subs image
+        working-directory: ./src/good_subscriber
+        run: |
+          docker build -t tazimtaz/good-message-subs-eh:latest .
+          docker push tazimtaz/good-message-subs-eh:latest
+          
+      - name: Build and push the latest error message subs image
+        working-directory: ./src/error_subscribers
+        run: |
+          docker build -t tazimtaz/error-message-subs-eh:latest .
+          docker push tazimtaz/error-message-subs-eh:latest
