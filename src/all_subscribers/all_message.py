@@ -23,6 +23,6 @@ def callback(ch, method, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume(callback, queue=queue, auto_ack=True)
+channel.basic_consume(queue=queue, callback, auto_ack=True)
 
 channel.start_consuming()

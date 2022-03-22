@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-good-message-queue
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq-good-message-queue
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-good-message-queue
+    spec:
+      containers:
+      - name: rabbitmq-good-message-queue
+        image: tazimtaz/good-message-subs-eh
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-good-message-queue-service
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq-good-message-queue
+  ports:
+  - port: 8003
