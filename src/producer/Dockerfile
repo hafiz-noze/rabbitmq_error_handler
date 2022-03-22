@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT [ "python" ]
 
-CMD ["generate_messages.py"]
+CMD ["generate_message.py"]

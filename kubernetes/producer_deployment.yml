@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-injector
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq-injector
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-injector
+    spec:
+      containers:
+      - name: rabbitmq-message-injector
+        image: tazimtaz/producer_mq_eh:latest
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-injector-service
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq-injector
+  ports:
+  - port: 8000
