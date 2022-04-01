@@ -4,7 +4,7 @@ import random
 import json
 import datetime
 
-count = 100
+count = 100000
 #queue = 'all_message'
 
 credentials = pika.PlainCredentials('user', 'PASSWORD')
@@ -33,7 +33,7 @@ for i in range(1, count+1):
         
     channel.basic_publish(exchange='all_message', routing_key=rk, body=json.dumps(message))
     print(" [x] Sent {}".format(message))
-    time.sleep(random.randint(1, 3))
+    time.sleep(random.randint(0, 2))
 
 channel.exchange_delete(exchange='all_message', if_unused=False)
 connection.close()

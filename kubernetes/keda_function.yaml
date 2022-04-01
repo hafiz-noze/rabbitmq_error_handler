@@ -4,7 +4,7 @@ metadata:
   name: keda-rabbitmq-secret
   namespace: default
 data:
-  RabbitMqHost: YW1xcHM6Ly9VU0VSOlBBU1NASE9TVC9WSE9TVA==
+  RabbitMqHost: YW1xcHM6Ly91c2VyOlBBU1NXT1JEQEhPU1QvVkhPU1Q=
 
 ---
 
@@ -31,8 +31,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: rabbitmq-all-message-queue
-  pollingInterval: 5
-  cooldownPeriod: 30
+  pollingInterval: 15
+  cooldownPeriod: 120
   maxReplicaCount: 30
   triggers:
   - type: rabbitmq
@@ -44,6 +44,7 @@ spec:
     authentication:
       secretTargetRef:
         - parameter: host
+          name: keda-rabbitmq-secret
           key: RabbitMqHost
 
 ---
@@ -72,6 +73,7 @@ spec:
       secretTargetRef:
         - parameter: host
           name: keda-rabbitmq-secret
+          key: RabbitMqHost
 
 ---
 
